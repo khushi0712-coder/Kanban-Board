@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Pro</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        <i class="fa-solid fa-layer-group"></i>
+
+        <div>
+            <h2>Kanban Pro</h2>
+            <span>Task Management Dashboard</span>
+        </div>
+
+    </div>
+
+    <div class="nav-right">
+
+        <div class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                id="searchTask"
+                placeholder="Search task..."
+            >
+
+        </div>
+
+        <button id="themeToggle">
+
+            <i class="fa-solid fa-moon"></i>
+
+        </button>
+
+    </div>
+
+</nav>
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-left">
+
+        <h1>
+            Organize your work,
+            <span>beautifully.</span>
+        </h1>
+
+        <p>
+
+            A clean and elegant Kanban board to manage
+            your daily workflow with drag & drop.
+
+        </p>
+
+    </div>
+
+    <div class="hero-right">
+
+        <div class="date-card">
+
+            <i class="fa-solid fa-calendar-days"></i>
+
+            <div>
+
+                <h3>Today</h3>
+
+                <span id="todayDate"></span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= STATS ================= -->
+
+<section class="stats">
+
+    <div class="stat-card">
+
+        <div class="icon blue">
+
+            <i class="fa-solid fa-list-check"></i>
+
+        </div>
+
+        <div>
+
+            <h2 id="totalTasks">0</h2>
+
+            <p>Total Tasks</p>
+
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="icon orange">
+
+            <i class="fa-solid fa-spinner"></i>
+
+        </div>
+
+        <div>
+
+            <h2 id="progressTasks">0</h2>
+
+            <p>In Progress</p>
+
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="icon green">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+        </div>
+
+        <div>
+
+            <h2 id="completedTasks">0</h2>
+
+            <p>Completed</p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= ADD TASK ================= -->
+
+<section class="add-task-card">
+
+    <h2>
+
+        <i class="fa-solid fa-plus"></i>
+
+        Create New Task
+
+    </h2>
+
+    <div class="task-form">
+
+        <input
+            type="text"
+            id="taskInput"
+            placeholder="Enter your task..."
+        >
+
+        <select id="priority">
+
+            <option value="Low">Low Priority</option>
+
+            <option value="Medium" selected>
+                Medium Priority
+            </option>
+
+            <option value="High">
+                High Priority
+            </option>
+
+        </select>
+
+        <button id="addTaskBtn">
+
+            <i class="fa-solid fa-plus"></i>
+
+            Add Task
+
+        </button>
+
+    </div>
+
+</section>
+
+<!-- ================= BOARD ================= -->
+
+<main class="board">
+
+    <!-- TODO -->
+
+    <section class="column" data-status="todo">
+
+        <div class="column-header todo">
+
+            <div>
+
+                <h2>
+
+                    <i class="fa-solid fa-thumbtack"></i>
+
+                    To Do
+
+                </h2>
+
+                <small>Tasks waiting</small>
+
+            </div>
+
+            <span id="todo-count">0</span>
+
+        </div>
+
+        <div
+            class="task-list"
+            id="todo"
+        ></div>
+
+    </section>
+
+    <!-- PROGRESS -->
+
+    <section class="column" data-status="progress">
+
+        <div class="column-header progress">
+
+            <div>
+
+                <h2>
+
+                    <i class="fa-solid fa-rocket"></i>
+
+                    In Progress
+
+                </h2>
+
+                <small>Currently working</small>
+
+            </div>
+
+            <span id="progress-count">0</span>
+
+        </div>
+
+        <div
+            class="task-list"
+            id="progress"
+        ></div>
+
+    </section>
+
+    <!-- DONE -->
+
+    <section class="column" data-status="done">
+
+        <div class="column-header done">
+
+            <div>
+
+                <h2>
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Completed
+
+                </h2>
+
+                <small>Finished tasks</small>
+
+            </div>
+
+            <span id="done-count">0</span>
+
+        </div>
+
+        <div
+            class="task-list"
+            id="done"
+        ></div>
+
+    </section>
+
+</main>
+
+<!-- ================= TEMPLATE ================= -->
+
+<template id="task-template">
+
+    <div
+        class="task"
+        draggable="true"
+    >
+
+        <div class="task-top">
+
+            <span class="priority">
+
+                Medium
+
+            </span>
+
+            <div class="task-actions">
+
+                <button class="edit-btn">
+
+                    <i class="fa-solid fa-pen"></i>
+
+                </button>
+
+                <button class="delete-btn">
+
+                    <i class="fa-solid fa-trash"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <h3 class="task-title">
+
+            Task Title
+
+        </h3>
+
+        <div class="task-footer">
+
+            <span>
+
+                <i class="fa-regular fa-clock"></i>
+
+                Just Now
+
+            </span>
+
+            <span>
+
+                <i class="fa-solid fa-grip"></i>
+
+                Drag
+
+            </span>
+
+        </div>
+
+    </div>
+
+</template>
+
+<script src="script.js"></script>
+
+</body>
+</html>
